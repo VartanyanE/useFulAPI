@@ -1,9 +1,11 @@
 import express from "express";
-// import { getPosts } from "../controllers/posts.js";
-// import { createPost } from "../controllers/posts.js";
+
+import {getData, createData} from "../controllers/crudController.js"
 const router = express.Router();
 
-router.get("/", getCrud);
-router.post("/", createCrud);
+// specify the endpoints and the functions we want to call
+router.get("/", getData);
+router.post("/", createData);
+
 
 export default router;
