@@ -7,5 +7,5 @@ const router = express.Router();
 router.get("/", getData);
 router.post("/", createData);
 
-
+// export to our server.js file
 export default router;
