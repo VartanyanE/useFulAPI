@@ -5,3 +5,5 @@
 ## I included as many comments as I could :)
 
 ### Do not forget to make your own MongoDbAtlas connection string
+
+### After cloning don't forget to npm install both server and client
