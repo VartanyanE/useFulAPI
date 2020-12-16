@@ -1,7 +1,7 @@
 import crudModel from '../models/firstCrud.js';
 
-// we create and  our functions we want to run on our model
-// we then export them to our routes file
+// we create and export our functions to the routes file
+
 
 
 
