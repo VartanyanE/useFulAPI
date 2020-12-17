@@ -9,5 +9,5 @@ export const createData = function (data) {
 };
 
 export const upDateData = function (id) {
-  return axios.put("/api/data" + id);
+  return axios.put("/api/data/" + id);
 };

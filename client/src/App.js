@@ -1,21 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { getData, createData } from "./utils/API";
+import { getData, createData, upDateData } from "./utils/API";
 
 const App = () => {
-  const [data, setData] = useState({
+  const [data, setData] = useState([{
+    // title: "",
+    // message: "",
+  }]);
+
+  const [dataBase, setDataBase] = useState([{
     title: "",
     message: "",
-  });
+  }]);
   // when our component mounts we run getData from our API and set our state
   useEffect(() => {
-    getData().then(({ data }) => setData(data));
-  }, []);
+    getData().then(({ data }) => setDataBase(data));
+  }, [setData]);
+//   console.log(dataBase)
   // when form is submmited we run createData from our API  and pass in our state
   const handleSubmit = (event) => {
     event.preventDefault();
     createData(data);
-    console.log(data);
+    // console.log(data);
   };
+
+const handleButton = (id) => {
+console.log(id);
+upDateData(id);
+}
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -31,6 +42,9 @@ const App = () => {
         />
         <button type="submit">Submit Data</button>
       </form>
+  <div>{dataBase.map((item) => (
+      <h1>{item.title} {item.message}<button onClick={()=> handleButton(item._id)}>Edit</button></h1>
+  ))}</div>
     </div>
   );
 };
