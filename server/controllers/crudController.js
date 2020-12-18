@@ -37,6 +37,7 @@ export const editData = async (req, res) => {
       { _id: req.params.id },
       req.body
     );
+    console.log(req.params.id);
     res.status(200).json(ourModel);
   } catch (error) {
     console.log(error);
