@@ -11,3 +11,7 @@ export const createData = function (data) {
 export const upDateData = function (id, data) {
   return axios.put("/api/data/" + id, data);
 };
+
+export const deleteData = function (id) {
+  return axios.delete("/api/data/" + id);
+};

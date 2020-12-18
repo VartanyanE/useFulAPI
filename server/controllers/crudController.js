@@ -5,7 +5,7 @@ import crudModel from "../models/firstCrud.js";
 // get request
 export const getData = async (req, res) => {
   try {
-    //run .find() on our model
+    //run .find() on our model 
     const dataPayload = await crudModel.find();
     // return status and send our payload in the response
     res.status(200).json(dataPayload);
@@ -34,8 +34,21 @@ export const createData = async (req, res) => {
 export const editData = async (req, res) => {
   try {
     const ourModel = await crudModel.findOneAndUpdate(
-      { _id: req.params.id },
+      {_id: req.params.id },
       req.body
+    );
+    console.log(req.params.id);
+    res.status(200).json(ourModel);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteData = async (req, res) => {
+  try {
+    const ourModel = await crudModel.findOneAndDelete(
+      {_id: req.params.id },
+      
     );
     console.log(req.params.id);
     res.status(200).json(ourModel);

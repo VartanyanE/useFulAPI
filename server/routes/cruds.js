@@ -4,6 +4,7 @@ import {
   getData,
   createData,
   editData,
+  deleteData
 } from "../controllers/crudController.js";
 const router = express.Router();
 
@@ -11,6 +12,7 @@ const router = express.Router();
 router.get("/", getData);
 router.post("/", createData);
 router.put("/:id", editData);
+router.delete("/:id", deleteData)
 
 // export to our server.js file
 export default router;

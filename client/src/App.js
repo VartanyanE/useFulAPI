@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getData, createData, upDateData } from "./utils/API";
+import { getData, createData, upDateData, deleteData } from "./utils/API";
 
 const App = () => {
   const [data, setData] = useState([
@@ -31,25 +31,33 @@ const App = () => {
   }, []);
   //   console.log(dataBase)
   // when form is submmited we run createData from our API  and pass in our state
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    createData(data);
+  await  createData(data); 
+    getData().then(({ data }) => setDataBase(data));
     // console.log(data);
   };
 
   const handleButton = async (id) => {
     await setCurrentId(id);
     console.log(currentId);
+   
 
     setEdit(true);
   };
 
   const handleEdit = async () => {
     setEdit(false);
-    upDateData(currentId, editData);
-    await setDataBase([editData]);
+  await  upDateData(currentId, editData);
+  getData().then(({ data }) => setDataBase(data));
+    // await setDataBase([editData]);
     console.log(editData);
   };
+
+  const handleDelete = async (id) => {
+     await deleteData(id);
+      getData().then(({ data }) => setDataBase(data));
+  }
 
   return (
     <div>
@@ -71,7 +79,8 @@ const App = () => {
           <h5>
             {item.title} {item.message}
             <button onClick={() => handleButton(item._id)}>Edit</button>{" "}
-          </h5>
+           <button onClick={() => handleDelete(item._id)}>Delete</button>  </h5>
+       
         ))}
         {edit ? (
           <form onSubmit={handleEdit}>
