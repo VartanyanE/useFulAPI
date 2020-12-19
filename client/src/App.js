@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getData, createData, upDateData, deleteData } from "./utils/API";
+import { getData, createData, upDateData, deleteData, likeCount } from "./utils/API";
 
 const App = () => {
   const [data, setData] = useState([
@@ -25,6 +25,14 @@ const App = () => {
 
   const [edit, setEdit] = useState(null);
   const [currentId, setCurrentId] = useState("");
+  const [like, setLike] = useState(
+    {
+      likeCount: 0,
+      title: "",
+      message: "",
+      
+    },
+  );;
   // when our component mounts we run getData from our API and set our state
   useEffect(() => {
     getData().then(({ data }) => setDataBase(data));
@@ -54,6 +62,16 @@ const App = () => {
     console.log(editData);
   };
 
+  const handleLike = async (id) => {
+   let addLike = like.likeCount + 1; 
+   
+  await setLike({...like, likeCount: addLike});
+  await  likeCount(id, like);
+await getData().then(({ data }) => setDataBase(data));
+    // await setDataBase([editData]);
+    console.log(like);
+  };
+
   const handleDelete = async (id) => {
      await deleteData(id);
       getData().then(({ data }) => setDataBase(data));
@@ -77,8 +95,9 @@ const App = () => {
       <div>
         {dataBase.map((item) => (
           <h5>
-            {item.title} {item.message}
+            {item.title} {item.message}LIKE COUNT---{item.likeCount}
             <button onClick={() => handleButton(item._id)}>Edit</button>{" "}
+            <button onClick={() => handleLike(item._id)}>Like</button>{" "}
            <button onClick={() => handleDelete(item._id)}>Delete</button>  </h5>
        
         ))}
