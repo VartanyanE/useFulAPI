@@ -44,6 +44,20 @@ export const editData = async (req, res) => {
   }
 };
 
+export const likeCount = async (req, res) => {
+  try {
+    const ourModel = await crudModel.findOneAndUpdate(
+      {_id: req.params.id },
+      req.body
+    
+    );  console.log(req.body)
+    console.log(req.params.id);
+    res.status(200).json(ourModel);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const deleteData = async (req, res) => {
   try {
     const ourModel = await crudModel.findOneAndDelete(

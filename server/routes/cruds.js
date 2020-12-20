@@ -4,7 +4,8 @@ import {
   getData,
   createData,
   editData,
-  deleteData
+  deleteData,
+  likeCount
 } from "../controllers/crudController.js";
 const router = express.Router();
 
@@ -12,6 +13,7 @@ const router = express.Router();
 router.get("/", getData);
 router.post("/", createData);
 router.put("/:id", editData);
+router.put("/:id", likeCount);
 router.delete("/:id", deleteData)
 
 // export to our server.js file
