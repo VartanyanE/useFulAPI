@@ -1,67 +1,37 @@
 import React, { useEffect, useState } from "react";
+import FileBase from "react-file-base64";
+
 import {
   getData,
   createData,
   upDateData,
   deleteData,
   likeCount,
-  getLikes,
 } from "./utils/API";
 
 const App = () => {
-  const [data, setData] = useState([
-    {
-      // title: "",
-      // message: "",
-    },
-  ]);
-
-  const [editData, setEditData] = useState([
-    {
-      // title: "",
-      // message: "",
-    },
-  ]);
-
-  const [dataBase, setDataBase] = useState([
-    {
-      title: "",
-      message: "",
-    },
-  ]);
-
+  const [data, setData] = useState([{}]);
+  const [editData, setEditData] = useState([{}]);
+  const [dataBase, setDataBase] = useState([{}]);
   const [edit, setEdit] = useState(null);
   const [currentId, setCurrentId] = useState("");
   const [like, setLike] = useState({});
+  const [image, setImage] = useState({});
+
   // when our component mounts we run getData from our API and set our state
   useEffect(() => {
     getData().then(({ data }) => setDataBase(data));
-    // getLikes(currentId).then(({ data }) => setLike(data));
   }, []);
-  // console.log(dataBase);
-  console.log(currentId);
-  console.log(like);
-  //   console.log(dataBase)
+
   // when form is submmited we run createData from our API  and pass in our state
   const handleSubmit = async (event) => {
     event.preventDefault();
     await createData(data);
     getData().then(({ data }) => setDataBase(data));
-
-    // console.log(data);
-  };
-
-  const setLikeFunction = async () => {
-    let addLike = await dataBase[0].likeCount;
-    await console.log(dataBase);
-    // setLike({
-    //   likeCount: parseInt(addLike),
-    // });
   };
 
   const handleButton = async (id) => {
     await setCurrentId(id);
-    console.log(currentId);
 
     setEdit(true);
   };
@@ -70,47 +40,20 @@ const App = () => {
     setEdit(false);
     await upDateData(currentId, editData);
     getData().then(({ data }) => setDataBase(data));
-    // await setDataBase([editData]);
-    console.log(editData);
   };
 
   const handleLike = async (id) => {
-    // console.log(dataBase);
+    setLike(like + 1);
     await setCurrentId(id);
+    await getData().then(({ data }) => setDataBase(data));
 
-    // let addLike = (await dataBase[0].likeCount) + 1;
-    // await console.log(currentId);
-    // await setLike({
-    //   likeCount: addLike,
-    // });
-    // await console.log(like);
-    // await setDataBase([{ ...dataBase, likeCount: addLike }]);
-    // await console.log(dataBase);
-    // console.log(like);
-    // await setLike({ ...like, likeCount: addLike });
-    // await console.log(like);
-    // await console.log(like);
-    // // setDataBase({
-    // //   likeCount:
-    // // })
-    // // await getLikes(id).then(({ data }) =>
-    // //   setLike({
-    // //     likeCount: data.likeCount + 1,
-    // //   })
-    // // );
-    // // console.log(like);
-    // // var addLike = like + 1;
+    likeCount(id);
+  };
 
-    // // console.log(response.data.likeCount);
-    // // console.log(addLike);
-    // // await setLike({ likeCount: addLike });
-    // // console.log(like);
-    // await upDateData(id, dataBase);
-
-    await likeCount(id);
-    // await getData().then(({ data }) => setDataBase(data));
-    // // await setDataBase([editData]);
-    // console.log(dataBase);
+  const uploadImage = async () => {
+    console.log(image);
+    await createData(image);
+    getData().then(({ data }) => setDataBase(data));
   };
 
   const handleDelete = async (id) => {
@@ -133,15 +76,27 @@ const App = () => {
         />
         <button type="submit">Submit Data</button>
       </form>
+      <FileBase
+        type="file"
+        multiple={false}
+        onDone={({ base64 }) => setImage({ ...image, selectedFile: base64 })}
+      />{" "}
+      <button type="submit" onClick={uploadImage}>
+        Upload Image
+      </button>
       <div>
         {dataBase.map((item) => (
-          <h5>
-            {item.title} {item.message}LIKE COUNT---{item.likeCount}
-            <button onClick={() => handleButton(item._id)}>Edit</button>{" "}
-            <button onClick={() => handleLike(item._id)}>Like</button>{" "}
-            <button onClick={() => handleDelete(item._id)}>Delete</button>{" "}
-          </h5>
+          <div>
+            <h5>
+              {item.title} {item.message}LIKES---{item.likeCount}
+              <button onClick={() => handleButton(item._id)}>Edit</button>{" "}
+              <button onClick={() => handleLike(item._id)}>Like</button>{" "}
+              <button onClick={() => handleDelete(item._id)}>Delete</button>{" "}
+            </h5>
+            {item.selectedFile}
+          </div>
         ))}
+
         {edit ? (
           <form onSubmit={handleEdit}>
             <label>Title</label>

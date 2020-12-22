@@ -60,9 +60,14 @@ export const editData = async (req, res) => {
 export const likeCount = async (req, res) => {
   try {
     const ourModel = await crudModel.findByIdAndUpdate(
-      { _id: req.params.id },
+      req.params.id,
       {
-        title: "hello",
+        $inc: {
+          likeCount: 1,
+        },
+      },
+      {
+        new: true,
       }
     );
     res.status(200).json(ourModel);

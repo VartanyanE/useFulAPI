@@ -17,7 +17,7 @@ export const upDateData = function (id, data) {
 };
 
 export const likeCount = function (id) {
-  return axios.put("/api/data/" + id);
+  return axios.patch("/api/data/" + id);
 };
 
 export const deleteData = function (id) {

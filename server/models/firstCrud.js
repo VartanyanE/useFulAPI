@@ -6,8 +6,9 @@ const crudSchema = mongoose.Schema({
   message: "String",
   likeCount: {
     type: Number,
-    default: 0
-  }
+    default: 0,
+  },
+  selectedFile: "String",
 });
 // turn our schema into a model
 const crudModel = mongoose.model("Crud", crudSchema);

@@ -15,7 +15,7 @@ router.get("/", getData);
 router.get("/:id", getLikes);
 router.post("/", createData);
 router.put("/:id", editData);
-router.put("/:id", likeCount);
+router.patch("/:id", likeCount);
 router.delete("/:id", deleteData);
 
 // export to our server.js file
