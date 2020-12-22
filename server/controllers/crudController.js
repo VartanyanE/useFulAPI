@@ -71,7 +71,7 @@ export const likeCount = async (req, res) => {
       }
     );
     res.status(200).json(ourModel);
-    console.log(ourModel);
+    
   } catch (error) {
     console.log(error);
   }

@@ -15,7 +15,7 @@ const App = () => {
   const [dataBase, setDataBase] = useState([{}]);
   const [edit, setEdit] = useState(null);
   const [currentId, setCurrentId] = useState("");
-  const [like, setLike] = useState({});
+  // const [like, setLike] = useState({});
   const [image, setImage] = useState({});
 
   // when our component mounts we run getData from our API and set our state
@@ -28,6 +28,7 @@ const App = () => {
     event.preventDefault();
     await createData(data);
     getData().then(({ data }) => setDataBase(data));
+    console.log(dataBase)
   };
 
   const handleButton = async (id) => {
@@ -43,11 +44,11 @@ const App = () => {
   };
 
   const handleLike = async (id) => {
-    setLike(like + 1);
+    
     await setCurrentId(id);
-    await getData().then(({ data }) => setDataBase(data));
-
-    likeCount(id);
+   
+ await likeCount(id);
+  await getData().then(({ data }) => setDataBase(data));
   };
 
   const uploadImage = async () => {
@@ -59,6 +60,7 @@ const App = () => {
   const handleDelete = async (id) => {
     await deleteData(id);
     getData().then(({ data }) => setDataBase(data));
+    setImage("");
   };
 
   return (
@@ -73,17 +75,18 @@ const App = () => {
         <input
           value={data.message}
           onChange={(e) => setData({ ...data, message: e.target.value })}
-        />
-        <button type="submit">Submit Data</button>
-      </form>
-      <FileBase
+        /><FileBase
         type="file"
         multiple={false}
-        onDone={({ base64 }) => setImage({ ...image, selectedFile: base64 })}
+        onDone={({ base64 }) => setData({ ...data, selectedFile: base64 })}
       />{" "}
+        <button type="submit">Submit Data</button>
+      </form>
+      
       <button type="submit" onClick={uploadImage}>
         Upload Image
       </button>
+      <img src={dataBase.selectedFile} alt="vegas" />
       <div>
         {dataBase.map((item) => (
           <div>
@@ -93,7 +96,7 @@ const App = () => {
               <button onClick={() => handleLike(item._id)}>Like</button>{" "}
               <button onClick={() => handleDelete(item._id)}>Delete</button>{" "}
             </h5>
-            {item.selectedFile}
+           
           </div>
         ))}
 
