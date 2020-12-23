@@ -62,6 +62,7 @@ const App = () => {
     getData().then(({ data }) => setDataBase(data));
     setImage("");
   };
+  console.log(dataBase)
 
   return (
     <div>
@@ -86,12 +87,14 @@ const App = () => {
       <button type="submit" onClick={uploadImage}>
         Upload Image
       </button>
-      <img src={dataBase.selectedFile} alt="vegas" />
+      
+     
       <div>
         {dataBase.map((item) => (
           <div>
             <h5>
-              {item.title} {item.message}LIKES---{item.likeCount}
+              {item.title} {item.message}LIKES---{item.likeCount} 
+              <img src={item.selectedFile} alt="vegas" />
               <button onClick={() => handleButton(item._id)}>Edit</button>{" "}
               <button onClick={() => handleLike(item._id)}>Like</button>{" "}
               <button onClick={() => handleDelete(item._id)}>Delete</button>{" "}
