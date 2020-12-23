@@ -94,7 +94,8 @@ const App = () => {
           <div>
             <h5>
               {item.title} {item.message}LIKES---{item.likeCount} 
-              <img src={item.selectedFile} alt="vegas" />
+              
+              <img src={item.selectedFile} alt="" />
               <button onClick={() => handleButton(item._id)}>Edit</button>{" "}
               <button onClick={() => handleLike(item._id)}>Like</button>{" "}
               <button onClick={() => handleDelete(item._id)}>Delete</button>{" "}
