@@ -18,7 +18,7 @@ app.use("/api/data", crudRoutes);
 const PORT = process.env.PORT || 3001;
 
 mongoose
-  .connect("mongodb+srv://lakers:lakers323@cluster0.cfxqh.mongodb.net/firstCrud?retryWrites=true&w=majority"
+  .connect(process.env.CONNECTION_URL
     , {
     useNewUrlParser: true,
     useUnifiedTopology: true,
