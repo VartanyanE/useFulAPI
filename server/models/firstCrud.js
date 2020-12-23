@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 // we build our schema
 const crudSchema = mongoose.Schema({
+  _id: String,
   title: "String",
   message: "String",
   likeCount: {

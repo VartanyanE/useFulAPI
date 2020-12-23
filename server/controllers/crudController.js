@@ -27,8 +27,37 @@ export const getLikes = async (req, res) => {
   }
 };
 
+export const searchResults = async (req, res) => {
+  try {
+    //run .find() on our model
+    const searchPayload = await crudModel.find({
+      title: req.params.common_name,
+    });
+    // return status and send our payload in the response
+    res.status(200).json(searchPayload);
+    console.log(searchPayload);
+  } catch (error) {
+    console.log(error);
+  }
+};
 // post request
 export const createData = async (req, res) => {
+  // our data from the frontend
+  const frontEnd = req.body;
+  // create a new document on our model
+  const newDoc = new crudModel(frontEnd);
+
+  try {
+    // run .save() on our model
+    await newDoc.save();
+    // return status and send our payload in the response
+    res.status(200).json(newDoc);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const uploadImage = async (req, res) => {
   // our data from the frontend
   const frontEnd = req.body;
   // create a new document on our model
@@ -71,7 +100,7 @@ export const likeCount = async (req, res) => {
       }
     );
     res.status(200).json(ourModel);
-    
+    console.log(ourModel);
   } catch (error) {
     console.log(error);
   }

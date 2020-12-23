@@ -7,6 +7,7 @@ import {
   upDateData,
   deleteData,
   likeCount,
+  searchResults,
 } from "./utils/API";
 
 const App = () => {
@@ -17,6 +18,10 @@ const App = () => {
   const [currentId, setCurrentId] = useState("");
   // const [like, setLike] = useState({});
   const [image, setImage] = useState({});
+  const [search, setSearch] = useState({
+    title: "",
+  });
+  const [searchResultsState, setSearchResultsState] = useState({});
 
   // when our component mounts we run getData from our API and set our state
   useEffect(() => {
@@ -28,7 +33,12 @@ const App = () => {
     event.preventDefault();
     await createData(data);
     getData().then(({ data }) => setDataBase(data));
-    console.log(dataBase)
+    console.log(dataBase);
+  };
+
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    searchResults(search.title).then(({ data }) => setSearchResultsState(data));
   };
 
   const handleButton = async (id) => {
@@ -44,11 +54,11 @@ const App = () => {
   };
 
   const handleLike = async (id) => {
-    
     await setCurrentId(id);
-   
- await likeCount(id);
-  await getData().then(({ data }) => setDataBase(data));
+    console.log(searchResultsState);
+
+    await likeCount(id);
+    await getData().then(({ data }) => setDataBase(data));
   };
 
   const uploadImage = async () => {
@@ -62,7 +72,7 @@ const App = () => {
     getData().then(({ data }) => setDataBase(data));
     setImage("");
   };
-  console.log(dataBase)
+  console.log(dataBase);
 
   return (
     <div>
@@ -76,31 +86,29 @@ const App = () => {
         <input
           value={data.message}
           onChange={(e) => setData({ ...data, message: e.target.value })}
-        /><FileBase
-        type="file"
-        multiple={false}
-        onDone={({ base64 }) => setData({ ...data, selectedFile: base64 })}
-      />{" "}
+        />
+        <FileBase
+          type="file"
+          multiple={false}
+          onDone={({ base64 }) => setData({ ...data, selectedFile: base64 })}
+        />{" "}
         <button type="submit">Submit Data</button>
       </form>
-      
+
       <button type="submit" onClick={uploadImage}>
         Upload Image
       </button>
-      
-     
+
       <div>
         {dataBase.map((item) => (
           <div>
             <h5>
-              {item.title} {item.message}LIKES---{item.likeCount} 
-              
+              {item.title} {item.message}LIKES---{item.likeCount}
               <img src={item.selectedFile} alt="" />
               <button onClick={() => handleButton(item._id)}>Edit</button>{" "}
               <button onClick={() => handleLike(item._id)}>Like</button>{" "}
               <button onClick={() => handleDelete(item._id)}>Delete</button>{" "}
             </h5>
-           
           </div>
         ))}
 
@@ -125,6 +133,18 @@ const App = () => {
         ) : (
           ""
         )}
+      </div>
+
+      <div>
+        <form onSubmit={handleSearch}>
+          <input
+            value={search.title}
+            onChange={(e) => {
+              setSearch({ ...search, title: e.target.value });
+            }}
+          />
+          <button type="submit>">Search</button>
+        </form>
       </div>
     </div>
   );
