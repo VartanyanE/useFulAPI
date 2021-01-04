@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 import crudRoutes from "./routes/cruds.js";
+import userRouter from "./routes/userRoutes.js"
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -14,6 +15,7 @@ app.use(cors());
 
 //specify at what endpoint do we want to hit our routes
 app.use("/api/data", crudRoutes);
+app.use("/users", userRouter);
 
 const PORT = process.env.PORT || 3001;
 
@@ -22,6 +24,7 @@ mongoose
     , {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true
   })
   .then(() =>
     app.listen(PORT, () => console.log(`Server running on port : ${PORT} `))

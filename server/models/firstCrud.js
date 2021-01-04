@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 // we build our schema
 const crudSchema = mongoose.Schema({
-  _id: String,
+  
   title: "String",
   message: "String",
   likeCount: {
@@ -10,6 +10,10 @@ const crudSchema = mongoose.Schema({
     default: 0,
   },
   selectedFile: "String",
+  createdAt: {
+    type: Date,
+    default: new Date(),
+  },
 });
 // turn our schema into a model
 const crudModel = mongoose.model("Crud", crudSchema);

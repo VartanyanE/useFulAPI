@@ -21,7 +21,7 @@ const App = () => {
   const [search, setSearch] = useState({
     title: "",
   });
-  const [searchResultsState, setSearchResultsState] = useState({});
+  const [searchResultsState, setSearchResultsState] = useState([{}]);
 
   // when our component mounts we run getData from our API and set our state
   useEffect(() => {
@@ -38,7 +38,8 @@ const App = () => {
 
   const handleSearch = async (event) => {
     event.preventDefault();
-    searchResults(search.title).then(({ data }) => setSearchResultsState(data));
+   await searchResults(search.title).then(({ data }) => setSearchResultsState(data));
+   await console.log(searchResultsState)
   };
 
   const handleButton = async (id) => {
@@ -145,6 +146,14 @@ const App = () => {
           />
           <button type="submit>">Search</button>
         </form>
+      </div>
+
+      <div>
+        {searchResultsState ? searchResultsState.map((results) => (
+        <h2>Title: {results.title} <br/>
+            Message: {results.message}<br/>
+            Likes: {results.likeCount}</h2> 
+        ))  : ""}
       </div>
     </div>
   );
