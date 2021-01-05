@@ -2,6 +2,7 @@ import express from "express";
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import auth from"../middleware/auth.js";
 
 const router = express.Router();
 
@@ -67,7 +68,7 @@ router.post("/login", async (req, res) => {
       user: {
         id: user._id,
         displayName: user.displayName,
-        email: user.email,
+        
       },
     });
   } catch (err) {
@@ -75,4 +76,44 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.delete("/delete", auth,  async (req, res) => {
+try {
+    const deletedUser = await User.findByIdAndDelete(req.user);
+    res.json(deletedUser)
+} catch (err) {
+    res.status(500).json({error: err.message})
+}
+});
+
+router.post("/tokenIsValid", async(req,res )=> {
+    try {
+        const token = req.header("x-auth-token");
+        if(!token) return res.json(false);
+
+        const verified = jwt.verify(token, process.env.JWT_SECRET);
+        if(!verified) return res.json(false);
+
+
+        const user = await User.findById(verified.id);
+        if(!user) return res.json(false);
+
+        console.log(verified)
+        return res.json(true);
+    } catch (err) {
+        res.status(500).json({error: err.message})
+    }
+  })
+
+    router.get("/" , auth, async (req,res) => {
+      const users = await User.findById(req.user);
+      res.json({
+        displayName: users.displayName,
+        id: users._id
+      });
+    })
+  
+
+
 export default router;
+
+// JWT_SECRET=fC1oY5lP9oQ1nM5y
